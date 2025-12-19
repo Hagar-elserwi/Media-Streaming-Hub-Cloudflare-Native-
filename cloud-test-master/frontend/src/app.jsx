@@ -20,7 +20,7 @@ const CloudflareMediaApp = () => {
   const fileInputRef = useRef(null);
   
 
-  const API_URL = 'https://media-api.am50088675.workers.dev';
+  const API_URL = 'https://cloud.gegeelserwi.workers.dev';
   const R2_PUBLIC_URL = 'https://pub-4a74b7ab35f7452d999ecf6a0';
 
   useEffect(() => {
