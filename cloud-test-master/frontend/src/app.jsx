@@ -19,9 +19,11 @@ const CloudflareMediaApp = () => {
   const videoRef = useRef(null);
   const fileInputRef = useRef(null);
   
-
+  // ✅ YOUR BACKEND (Worker)
   const API_URL = 'https://cloud.gegeelserwi.workers.dev';
+  // ✅ YOUR STORAGE (R2 Public URL - For Watching Only)
   const R2_PUBLIC_URL = "https://pub-e13d1b6b362b441293042c3ebcc23dd4.r2.dev";
+
   useEffect(() => {
     fetchVideos();
     fetchAnalytics();
@@ -84,7 +86,13 @@ const CloudflareMediaApp = () => {
       // Generate unique ID and filename
       const videoId = `video-${Date.now()}`;
       const filename = `${videoId}-${file.name}`;
-      const fileUrl = `${R2_PUBLIC_URL}/videos/${filename}`;
+      
+      // 🟢 FIX 1: Create a playback URL for the Database (Read-Only)
+      const playbackUrl = `${R2_PUBLIC_URL}/videos/${filename}`;
+      
+      // 🟢 FIX 2: Create an Upload URL pointing to your WORKER (Write Access)
+      // We send the file to the worker, and the worker saves it to R2.
+      const uploadUrl = `${API_URL}/api/upload/${filename}`;
 
       // Simulate progress during upload
       const progressInterval = setInterval(() => {
@@ -97,8 +105,8 @@ const CloudflareMediaApp = () => {
         });
       }, 200);
 
-      // Upload to R2 using fetch
-      const uploadResponse = await fetch(fileUrl, {
+      // 🟢 FIX 3: Upload to the Worker, NOT the Public URL
+      const uploadResponse = await fetch(uploadUrl, {
         method: 'PUT',
         body: file,
         headers: {
@@ -109,7 +117,7 @@ const CloudflareMediaApp = () => {
       clearInterval(progressInterval);
 
       if (!uploadResponse.ok) {
-        throw new Error('Upload failed');
+        throw new Error('Upload failed - Worker did not accept the file');
       }
 
       setUploadProgress(100);
@@ -125,7 +133,7 @@ const CloudflareMediaApp = () => {
           title: file.name.replace(/\.[^/.]+$/, ''),
           description: `Uploaded on ${new Date().toLocaleDateString()}`,
           filename: `videos/${filename}`,
-          fileUrl: fileUrl,
+          fileUrl: playbackUrl, // ✅ Save the Public URL to DB
           fileSize: file.size,
           userId: user.id,
           userEmail: user.email,
