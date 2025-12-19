@@ -9,7 +9,7 @@ bucket_name = "media-videos"
 
 # D1 Database binding
 [[d1_databases]]
-binding = "media_db"
+binding = "DB"
 database_name = "media-db"
 database_id = "f3abe0af-20f8-467e-ad29-494b6b50d088"
 
