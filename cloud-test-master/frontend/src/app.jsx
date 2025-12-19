@@ -21,8 +21,7 @@ const CloudflareMediaApp = () => {
   
 
   const API_URL = 'https://cloud.gegeelserwi.workers.dev';
-  const R2_PUBLIC_URL = 'https://pub-4a74b7ab35f7452d999ecf6a0';
-
+  const R2_PUBLIC_URL = "https://pub-e13d1b6b362b441293042c3ebcc23dd4.r2.dev";
   useEffect(() => {
     fetchVideos();
     fetchAnalytics();
