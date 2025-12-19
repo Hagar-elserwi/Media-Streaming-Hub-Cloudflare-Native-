@@ -17,4 +17,4 @@ database_id = "f3abe0af-20f8-467e-ad29-494b6b50d088"
 # Environment variables (for development)
 [vars]
 ENVIRONMENT = "development"
-R2_PUBLIC_URL = "https://pub-e13d1b6b362b441293042c3ebcc23dd4.r2.dev"
+R2_PUBLIC_URL = "https://pub-e13d1b6b362b441293042c3cbcc23dd4.r2.dev"
